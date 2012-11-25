@@ -10,17 +10,17 @@ object Lists {
    */
   def last[A](ls: List[A]): A = {
     // throw new RuntimeException("Not implemented yet")
-    
-	// implemented without using the built-in method on List
+
+    // implemented without using the built-in method on List
     ls match {
       case Nil => throw new NoSuchElementException
       case x :: Nil => x
       case x :: xs => last(xs)
     }
-    
+
     // just for fun, an implementation that uses foldLeft
-//    if (ls.isEmpty) throw new NoSuchElementException
-//    else ls.foldLeft(ls.head)( (x, y) => y )
+    //    if (ls.isEmpty) throw new NoSuchElementException
+    //    else ls.foldLeft(ls.head)( (x, y) => y )
   }
 
   /*
@@ -63,18 +63,18 @@ object Lists {
    */
   def length[A](ls: List[A]): Int = {
     //throw new RuntimeException("Not implemented yet")
-    
-//	// implement with a tail-recursive helper function
-//    def length0(n: Int, ls: List[A]): Int = {
-//      ls match {
-//        case Nil => n
-//        case _ => length0(n+1, ls.tail)
-//      }
-//    }
-//    length0(0, ls)
-    
+
+    //	// implement with a tail-recursive helper function
+    //    def length0(n: Int, ls: List[A]): Int = {
+    //      ls match {
+    //        case Nil => n
+    //        case _ => length0(n+1, ls.tail)
+    //      }
+    //    }
+    //    length0(0, ls)
+
     // start with 0, add one for each element in the list
-    ls.foldLeft(0)( (x, _) => x + 1 )
+    ls.foldLeft(0)((x, _) => x + 1)
   }
 
   /*
@@ -84,7 +84,23 @@ object Lists {
    * res0: List[Int] = List(8, 5, 3, 2, 1, 1)
    */
   def reverse[A](ls: List[A]): List[A] = {
-    throw new RuntimeException("Not implemented yet")
+    //throw new RuntimeException("Not implemented yet")
+
+    // recursive solution
+    //    def reverse0(accum: List[A], ls: List[A]): List[A] = ls match {
+    //      case Nil => accum
+    //      case x :: xs => reverse0(x :: accum, xs)
+    //    }
+    //    reverse0(Nil, ls)
+    
+    // the above can be transformed into a foldLeft
+    // start with empty list, add each element to the front
+    ls.foldLeft(List[A]())((accum, x) => x :: accum)
+  }
+
+  def isPalindrome[A](ls: List[A]): Boolean = {
+    //throw new RuntimeException("Not implemented yet")
+    ls == reverse(ls)
   }
 
   def flatten(ls: List[Any]): List[Any] = {

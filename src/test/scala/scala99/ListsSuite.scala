@@ -40,4 +40,21 @@ class ListsSuite extends FunSuite {
     assert(length(List(1)) === 1)
     assert(length(List(1, 1, 2, 3, 5, 8)) === 6)
   }
+
+  test("P05 -- reverse a list") {
+    assert(reverse(List()) === List())
+    assert(reverse(List(1)) === List(1))
+    assert(reverse(List(1, 1, 2, 3, 5, 8)) === List(8, 5, 3, 2, 1, 1))
+  }
+
+  test("P06 -- isPalindrome ") {
+    assert(isPalindrome(List()) === true)
+    assert(isPalindrome(List(1)) === true)
+    assert(isPalindrome(List(1, 2, 3, 2, 1)) === true)
+    assert(isPalindrome(List(1, 2, 3, 2, 2)) === false)
+    assert(isPalindrome(List(1, 2, 3, 1, 1)) === false)
+    assert(isPalindrome(List(1, 2, 2, 1)) === true)
+    assert(isPalindrome(List(1, 2, 1, 1)) === false)
+  }
+
 }
