@@ -100,6 +100,8 @@ class ListsSuite extends FunSuite {
 
   test("P16 -- drop") {
     assert(drop(3, List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)) === List('a, 'b, 'd, 'e, 'g, 'h, 'j, 'k))
+    assert(drop(3, List('a)) === List('a))
+    assert(drop(3, List()) === List())
   }
 
   test("P17 -- split") {
@@ -117,6 +119,10 @@ class ListsSuite extends FunSuite {
 
   test("P20 -- removeAt") {
     assert(removeAt(1, List('a, 'b, 'c, 'd)) === (List('a, 'c, 'd), 'b))
+    assert(removeAt(0, List('a, 'b, 'c, 'd)) === (List('b, 'c, 'd), 'a))
+    assert(removeAt(3, List('a, 'b, 'c, 'd)) === (List('a, 'b, 'c), 'd))
+    intercept[NoSuchElementException] { removeAt(4, List('a, 'b)) }
+    intercept[NoSuchElementException] { removeAt(0, List()) }
   }
 
   test("P21 -- insertAt") {
