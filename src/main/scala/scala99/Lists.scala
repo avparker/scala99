@@ -461,7 +461,18 @@ object Lists {
    * You may find more about this combinatorial problem in a good book on discrete mathematics
    * under the term "multinomial coefficients".
    */
-  def group3[A](ls: List[A]): List[List[List[A]]] = ???
+  def group3[A](ls: List[A]): List[List[List[A]]] =
+//    for {
+//      firstGroup <- combinations(2, ls)
+//      secondGroup <- combinations(3, ls.filterNot(firstGroup.contains(_)))
+//    } yield List(firstGroup, secondGroup, ls.filterNot(firstGroup.contains(_)).filterNot(secondGroup.contains(_)))
+    for {
+      firstGroup <- combinations(2, ls)
+      val excludingFirstGroup = ls.filterNot(firstGroup.contains(_))
+      secondGroup <- combinations(3, excludingFirstGroup)
+      val excludingFirstAndSecondGroup = excludingFirstGroup.filterNot(secondGroup.contains(_))
+    } yield List(firstGroup, secondGroup, excludingFirstAndSecondGroup)
+
   def group[A](sizes: List[Int], ls: List[A]): List[List[List[A]]] = ???
 
   /*
@@ -487,8 +498,19 @@ object Lists {
    * and both lengths appear just once. The third and fourth lists have length 3 and there
    * are two list of this length. Finally, the last three lists have length 2. This is the most frequent length.
    */
-  def lsort[A](lls: List[List[A]]): List[List[A]] = ???
-  def lsortFreq[A](lls: List[List[A]]): List[List[A]] = ???
+  def lsort[A](lls: List[List[A]]): List[List[A]] =
+    lls.sortWith( (a, b) => a.length < b.length )
+
+  def lsortFreq[A](lls: List[List[A]]): List[List[A]] = {
+    val freq = lls.foldLeft(Map[Int, Int]()) {
+      (f, l) => {
+        val length = l.length
+        if (!f.contains(length)) f + ((length, 1))
+        else f + ((length, 1+f(length)))
+      }
+    }
+    lls.sortWith( (a, b) => freq(a.length) < freq(b.length) )
+  }
 
   def ??? : Nothing = throw new Error("This problem has not been implemented yet.")
 }

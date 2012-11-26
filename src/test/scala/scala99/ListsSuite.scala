@@ -6,7 +6,8 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 // Unit tests liberally copied from https://github.com/danluu/ninety-nine-scala-problems
-// Added some tests cases for handling exceptional cases
+// Added some tests for handling exceptional cases (e.g. taking last element of an empty list)
+// Added some missing tests cases
 @RunWith(classOf[JUnitRunner])
 class ListsSuite extends FunSuite {
   import scala99.Lists._
@@ -134,17 +135,19 @@ class ListsSuite extends FunSuite {
   }
 
   test("P23 -- randomSelect") {
-    //Note that the current example on http://aperiodic.net/phil/scala/s-99/ is wrong
+    //Note that the current example on http://aperiodic.net/phil/scala/s-99/ is wrong, it's missing 'e' in the list
     val input = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h)
-    val results = randomSelect(3, input)
-    assert(3 === results.toSet.size) // ensure distinct elements
+    val numSelected = 3
+    val results = randomSelect(numSelected, input)
+    assert(results.toSet.size === numSelected) // ensure distinct elements
     assert(results.toSet.subsetOf(input.toSet)) // every element should be from the input
   }
 
   test("P24 -- lotto") {
     val max = 20
-    val results = lotto(3, max)
-    assert(3 === results.toSet.size) // ensure distinct elements
+    val numSelected = 3
+    val results = lotto(numSelected, max)
+    assert(results.toSet.size === numSelected) // ensure distinct elements
     assert(results.toSet.subsetOf((1 to max).toList.toSet)) // every element should be from the input
   }
 
@@ -152,7 +155,7 @@ class ListsSuite extends FunSuite {
     val max = 50
     val input = (1 to max).toList
     val results = randomPermute(input)
-    assert(max === results.toSet.size) // ensure distinct elements
+    assert(results.toSet.size === max) // ensure distinct elements
     assert(results.toSet.subsetOf(input.toSet)) // every element should be from the input
     assert(results != input) // the odds of this matching by accident are staggeringly small
   }
@@ -175,10 +178,26 @@ class ListsSuite extends FunSuite {
   }
 
   test("P27 -- disjoint subets") {
-    assert(1 === 0) //TODO: can't think of a non-hacky way to do this atm.
+    val results = group3(List("Aldo", "Beat", "Carla", "David", "Evi", "Flip", "Gary", "Hugo", "Ida"))
+    // check every solution has lists of the correct lengths
+    for (result <- results) yield {
+      assert(result.head.length === 2, result.head)
+      assert(result.tail.head.length === 3, result.tail.head)
+      assert(result.tail.tail.head.length === 4, result.tail.tail.head)
+    }
+    assert(results.length === 1260)
+    val oneExpectedResult = List(List("Aldo", "Beat"), List("Carla", "David", "Evi"), List("Flip", "Gary", "Hugo", "Ida"))
+    assert(results.contains(oneExpectedResult))
+    
+    // TODO - test 'group'
   }
 
   test("P28 -- sort list based on length") {
     assert(lsort(List(List('a, 'b, 'c), List('d, 'e), List('f, 'g, 'h), List('d, 'e), List('i, 'j, 'k, 'l), List('m, 'n), List('o))) === List(List('o), List('d, 'e), List('d, 'e), List('m, 'n), List('a, 'b, 'c), List('f, 'g, 'h), List('i, 'j, 'k, 'l)))
+
+    val result = lsortFreq(List(List('a, 'b, 'c), List('d, 'e), List('f, 'g, 'h), List('d, 'e), List('i, 'j, 'k, 'l), List('m, 'n), List('o)))
+    val expectedResult = List(List('i, 'j, 'k, 'l), List('o), List('a, 'b, 'c), List('f, 'g, 'h), List('d, 'e), List('d, 'e), List('m, 'n))
+
+    assert(result === expectedResult)
   }
 }
