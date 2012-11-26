@@ -134,33 +134,44 @@ class ListsSuite extends FunSuite {
   }
 
   test("P23 -- randomSelect") {
-    //TODO: come up with a method of testing random selection
     //Note that the current example on http://aperiodic.net/phil/scala/s-99/ is wrong
+    val input = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h)
+    val results = randomSelect(3, input)
+    assert(3 === results.toSet.size) // ensure distinct elements
+    assert(results.toSet.subsetOf(input.toSet)) // every element should be from the input
   }
 
   test("P24 -- lotto") {
-    //TODO: come up with a method of testing random selection 
+    val max = 20
+    val results = lotto(3, max)
+    assert(3 === results.toSet.size) // ensure distinct elements
+    assert(results.toSet.subsetOf((1 to max).toList.toSet)) // every element should be from the input
   }
 
   test("P25 -- randomPermute") {
-    //TODO: come up with a method of testing random selection 
+    val max = 50
+    val input = (1 to max).toList
+    val results = randomPermute(input)
+    assert(max === results.toSet.size) // ensure distinct elements
+    assert(results.toSet.subsetOf(input.toSet)) // every element should be from the input
+    assert(results != input) // the odds of this matching by accident are staggeringly small
   }
 
   test("P26 -- combinations") {
     val c1 = combinations(1, List('a, 'b, 'c))
     val a1 = List(List('a), List('b), List('c))
-    assert(c1.length == a1.length && c1.toSet == a1.toSet)
+    assert(c1.toSet === a1.toSet)
 
     val c2 = combinations(2, List('a, 'b, 'c))
     val a2 = List(List('a, 'b), List('a, 'c), List('b, 'c))
-    assert(c2.length == a2.length && c2.toSet == a2.toSet)
+    assert(c2.toSet === a2.toSet)
 
     val c3 = combinations(3, List('a, 'b, 'c, 'd, 'e, 'f))
     val a3 = List(List('a, 'b, 'c), List('a, 'b, 'd), List('a,
       'b, 'e), List('a, 'b, 'f), List('a, 'c, 'd), List('a, 'c, 'e), List('a, 'c,
       'f), List('a, 'd, 'e), List('a, 'd, 'f), List('a, 'e, 'f), List('b, 'c, 'd), List('b, 'c, 'e), List('b, 'c, 'f), List('b, 'd, 'e), List('b, 'd, 'f), List('b, 'e, 'f), List('c, 'd, 'e), List('c, 'd, 'f), List('c, 'e, 'f), List(
       'd, 'e, 'f))
-    assert(c3.length == a3.length && c3.toSet == a3.toSet)
+    assert(c3.toSet === a3.toSet)
   }
 
   test("P27 -- disjoint subets") {

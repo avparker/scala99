@@ -390,6 +390,13 @@ object Lists {
    * scala> randomSelect(3, List('a, 'b, 'c, 'd, 'f, 'g, 'h))
    * res0: List[Symbol] = List('e, 'd, 'a)
    */
+  def randomSelect[A](n: Int, ls: List[A]): List[A] =
+    if (n <= 0) Nil
+    else {
+      val random = util.Random.nextInt(n);
+      val (remaining, l) = removeAt(random, ls)
+      l :: randomSelect(n-1, remaining)
+    }
 
   /*
    * P24 (*) Lotto: Draw N different random numbers from the set 1..M.
@@ -398,6 +405,8 @@ object Lists {
    * scala> lotto(6, 49)
    * res0: List[Int] = List(23, 1, 17, 33, 21, 37)
    */
+  def lotto(n: Int, m: Int): List[Int] =
+    randomSelect(n, range(1, m))
 
   /*
    * P25 (*) Generate a random permutation of the elements of a list.
@@ -407,6 +416,8 @@ object Lists {
    * scala> randomPermute(List('a, 'b, 'c, 'd, 'e, 'f))
    * res0: List[Symbol] = List('b, 'a, 'd, 'c, 'e, 'f)
    */
+  def randomPermute[A](ls: List[A]): List[A] =
+    randomSelect(ls.length, ls)
 
   /*
    * P26 (**) Generate the combinations of K distinct objects chosen from the N elements of a list.
@@ -419,7 +430,14 @@ object Lists {
    * scala> combinations(3, List('a, 'b, 'c, 'd, 'e, 'f))
    * res0: List[List[Symbol]] = List(List('a, 'b, 'c), List('a, 'b, 'd), List('a, 'b, 'e), ... 
    */
-  def combinations[A](n: Int, ls: List[A]): List[A] = ???
+  def combinations[A](n: Int, ls: List[A]): List[List[A]] =
+    if (n <= 0) List(Nil)
+    else {
+      for {
+        i <- range(0, ls.length-1)
+        rest <- combinations(n-1, ls.drop(i+1)) // dropping ensures we don't generate duplicates
+      } yield ls(i) :: rest
+    }
 
   /*
    * P27 (**) Group the elements of a set into disjoint subsets.
@@ -443,6 +461,8 @@ object Lists {
    * You may find more about this combinatorial problem in a good book on discrete mathematics
    * under the term "multinomial coefficients".
    */
+  def group3[A](ls: List[A]): List[List[List[A]]] = ???
+  def group[A](sizes: List[Int], ls: List[A]): List[List[List[A]]] = ???
 
   /*
    * P28 (**) Sorting a list of lists according to length of sublists.
@@ -468,6 +488,7 @@ object Lists {
    * are two list of this length. Finally, the last three lists have length 2. This is the most frequent length.
    */
   def lsort[A](lls: List[List[A]]): List[List[A]] = ???
+  def lsortFreq[A](lls: List[List[A]]): List[List[A]] = ???
 
-  def ??? : Nothing = throw new Error("Not implemented yet.")
+  def ??? : Nothing = throw new Error("This problem has not been implemented yet.")
 }
